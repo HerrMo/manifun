@@ -93,3 +93,36 @@ plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1
   if (labels) p <- p + geom_text_repel(aes(x = dim1, y = dim2, label = label))
   p
 }
+
+
+# convenience function for plotly to visualize embedding object
+plotly_viz <- function(x, ...) {
+  UseMethod("plotly_viz", x)
+}
+
+plotly_viz.embedding <- function(emb, ..., size = 0.1) {
+  plotly::plot_ly(x = emb$points[, 1], y = emb$points[, 2], z = emb$points[, 3],
+                  size = size,
+                  type = "scatter3d", ...)
+}
+
+plotly_viz.default <- function(mat, ..., size = 0.1) {
+  plotly::plot_ly(x = mat[, 1], y = mat[, 2], z = mat[, 3],
+                  size = size,
+                  type = "scatter3d", ...)
+}
+
+plotly_viz.umap <- function(emb, ..., size = 0.1) {
+  plotly::plot_ly(x = emb$layout[, 1], y = emb$layout[, 2], z = emb$layout[, 3],
+                  size = size,
+                  type = "scatter3d", ...)
+}
+
+plotly_viz.tsne <- function(emb, ..., size = 0.1) {
+  plotly::plot_ly(x = emb$Y[, 1], y = emb$Y[, 2], z = emb$Y[, 3],
+                  size = size,
+                  type = "scatter3d", ...)
+}
+
+
+
