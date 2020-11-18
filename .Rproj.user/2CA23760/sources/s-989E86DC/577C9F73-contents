@@ -29,5 +29,36 @@ embed <- function(dist_mat, method = c("isomap", "umap", "diffmap", "mds", "tsne
 }
 
 
+# help fun S3 class to extract embedding coordinates
+extract_points <- function(x, ...) {
+  UseMethod("extract_points")
+}
+
+# S3 method for isomap
+extract_points.isomap <- function(embedding, ndim = dim(embedding$points)[2]) {
+  embedding$points[, 1:ndim]
+}
+
+# S3 method for umap
+extract_points.umap <- function(embedding, ndim = dim(embedding$layout)[2]) {
+  embedding$layout[, 1:ndim]
+}
+
+# S3 method for diffusionMap
+extract_points.diffuse <- function(embedding, ndim = dim(embedding$X)[2]) {
+  embedding$X[, 1:ndim]
+}
+
+# S3 method for matrix output, e.g. mds
+extract_points.matrix <- function(embedding, ndim = dim(embedding)[2]) {
+  embedding[, 1:ndim]
+}
+
+# S3 method for tsne
+extract_points.tsne <- function(embedding, ndim = dim(embedding$Y)[2]) {
+  embedding$Y[, 1:ndim]
+}
+
+
 
 
