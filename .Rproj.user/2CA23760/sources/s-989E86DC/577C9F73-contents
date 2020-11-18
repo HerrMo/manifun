@@ -27,3 +27,7 @@ embed <- function(dist_mat, method = c("isomap", "umap", "diffmap", "mds", "tsne
 
   emb
 }
+
+
+
+
