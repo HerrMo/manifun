@@ -98,11 +98,11 @@ auc_log10_k <- function(rnx) {
   return(sum(rnx * log10(Ks)) / sum(log10(Ks)))
 }
 
-local_q <- function(x, ...) {
+q_local <- function(x, ...) {
   UseMethod("local_q")
 }
 
-local_q.default <- function(d1, d2, ...) {
+q_local.default <- function(d1, d2, ...) {
   assertMatrix(d1)
   assertMatrix(d2)
 
@@ -122,7 +122,7 @@ local_q.default <- function(d1, d2, ...) {
   return(as.vector(Qlocal))
 }
 
-local_q.embedding <-
+q_local.embedding <-
   function(object, ndim = 3, p_space) {
     ld_dist <- as.matrix(dist(object$points[, 1:ndim]))
 
@@ -148,11 +148,11 @@ local_q.embedding <-
     return(as.vector(Qlocal))
   }
 
-global_q <- function(x, ...) {
+q_global <- function(x, ...) {
   UseMethod("global_q")
 }
 
-global_q.default <- function(d1, d2) {
+q_global.default <- function(d1, d2) {
   assertMatrix(d1)
   assertMatrix(d2)
 
@@ -172,7 +172,7 @@ global_q.default <- function(d1, d2) {
   return(as.vector(Qglobal))
 }
 
-global_q.embedding <-
+q_global.embedding <-
   function(object, ndim = 3, p_space){
     ld_dist <- as.matrix(dist(object$points[, 1:ndim]))
 
