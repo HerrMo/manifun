@@ -7,13 +7,13 @@
     "folds" : "",
     "hash" : "0",
     "id" : "577C9F73",
-    "lastKnownWriteTime" : 1605696638,
-    "last_content_update" : 1605696638699,
+    "lastKnownWriteTime" : 1605707652,
+    "last_content_update" : 1605707652166,
     "path" : "~/projects/manifun/R/embedding.R",
     "project_path" : "R/embedding.R",
     "properties" : {
-        "cursorPosition" : "51,36",
-        "scrollLine" : "34",
+        "cursorPosition" : "13,11",
+        "scrollLine" : "0",
         "tempName" : "Untitled1"
     },
     "read_only" : false,

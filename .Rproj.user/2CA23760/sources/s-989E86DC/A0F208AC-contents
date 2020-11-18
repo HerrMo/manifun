@@ -3,6 +3,7 @@
 #'
 #'
 
+#' @import coRanking
 
 R_nx <- function(x, ...) {
   UseMethod("R_nx2")

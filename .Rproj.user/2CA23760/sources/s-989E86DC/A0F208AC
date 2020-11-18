@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "1797465802",
     "id" : "A0F208AC",
-    "lastKnownWriteTime" : 1605696776,
-    "last_content_update" : 1605696776404,
+    "lastKnownWriteTime" : 1605707650,
+    "last_content_update" : 1605707650352,
     "path" : "~/projects/manifun/R/embedding_quality.R",
     "project_path" : "R/embedding_quality.R",
     "properties" : {
-        "cursorPosition" : "84,0",
-        "scrollLine" : "72"
+        "cursorPosition" : "5,20",
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [

@@ -7,6 +7,13 @@
 #'
 #' Returns an embedding object of class <method>.
 
+#' @export
+#' @import vegan
+#' @import Rtsne
+#' @import diffusionMap
+#' @import umap
+#' @usage NULL
+#' @format NULL
 embed <- function(dist_mat, method = c("isomap", "umap", "diffmap", "mds", "tsne"), ...) {
   method <- match.arg(method, c("isomap", "umap", "diffmap", "mds", "tsne"))
 

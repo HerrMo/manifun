@@ -1,5 +1,8 @@
 # viusalization tools
 
+#' @import gplot2
+
+
 # function to plot funs of fun_data object
 plot_funs <- function(data, ...) {
   UseMethod("plot_funs")
@@ -79,7 +82,7 @@ plot_emb.matrix <- function(embedding, color = NULL, labels = FALSE, size = 1) {
 
   pts <- extract_points(emb, 2)
   p <- plot_emb.default(pts, ...)
-  if (labels) p <- p + geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
 
@@ -90,7 +93,7 @@ plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1
   emb <- embedding$emb
   pts <- extract_points(emb, 2)
   p <- plot_emb.default(pts, ...)
-  if (labels) p <- p + geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
   p
 }
 
@@ -123,6 +126,5 @@ plotly_viz.tsne <- function(emb, ..., size = 0.1) {
                   size = size,
                   type = "scatter3d", ...)
 }
-
 
 

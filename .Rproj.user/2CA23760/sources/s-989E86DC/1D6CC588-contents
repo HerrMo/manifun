@@ -1,5 +1,8 @@
 # viusalization tools
 
+#' @import gplot2
+
+
 # function to plot funs of fun_data object
 plot_funs <- function(data, ...) {
   UseMethod("plot_funs")
@@ -79,7 +82,7 @@ plot_emb.matrix <- function(embedding, color = NULL, labels = FALSE, size = 1) {
 
   pts <- extract_points(emb, 2)
   p <- plot_emb.default(pts, ...)
-  if (labels) p <- p + geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
 
@@ -90,7 +93,7 @@ plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1
   emb <- embedding$emb
   pts <- extract_points(emb, 2)
   p <- plot_emb.default(pts, ...)
-  if (labels) p <- p + geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
   p
 }
 
@@ -125,207 +128,3 @@ plotly_viz.tsne <- function(emb, ..., size = 0.1) {
 }
 
 
-
-# shiny app vis ------------------------------------------------------------
-
-# shiny visualization for lists of embedding objects as produced by embed
-# TODO arg check
-# TODO add groups
-shiny_viz <- function(l_embs, ...) {
-  methods <- vapply(l_embs, 
-                    function(emb) emb[["method"]], 
-                    FUN.VALUE = character(length(1)))
-  
-  if (length(unique(methods)) != length(methods)) {
-    methods <- paste0(methods, "-", 1:length(methods))
-  } 
-  
-  # TODO check metric slot to be non-NULL
-  metrics <- vapply(l_embs,
-                    function(emb) emb[["metric"]],
-                    FUN.VALUE = character(length(1)))
-  
-  # TODO check datasets to be equal!!!
-  
-  # make sure we have unique names for every embedding/plot
-  unique_nams <- paste(methods, metrics, sep = "-")
-  names(l_embs) <- unique_nams
-  
-  funs <- get_funs(l_embs[[1]]$data) # funs in rows
-  n_funs <- nrow(funs)
-  grid <- get_grid(l_embs[[1]]$data)
-  grid_size <- length(grid)
-  
-  tf_funs <- tibble("funs" = tfd(funs, arg = grid),
-                    "id" = as.factor(1:n_funs))
-  if (!is.null(grouping)) tf_funs$group <- grouping
-  
-  shinyApp(
-    ui <- fluidPage(
-      fluidRow(
-        lapply(unique_nams, function(meth) { 
-          column(3, 
-                 plotOutput(paste0("plot1_", meth), 
-                            brush = paste0("plot_brush_", meth),
-                            height = 500),
-                 verbatimTextOutput(paste0("info_", meth)),
-                 plotOutput(paste0("plot2_", meth)))
-        })
-      )
-    ),
-    
-    server <- function(input, output) {
-      lapply(unique_nams, function(meth) { # shorten by using plot_emb2!
-        output[[paste0("plot1_", meth)]] <- renderPlot({
-          plot_emb(l_embs[[meth]], ...)
-        })
-        
-        output[[paste0("info_", meth)]] <- renderPrint({
-          pts <- extract_points(l_embs[[meth]])
-          dat <- data.frame(dim1 = pts[, 1],
-                            dim2 = pts[, 2],
-                            label = as.factor(1:nrow(pts)))
-          
-          ids <- brushedPoints(dat, input[[paste0("plot_brush_", meth)]]) 
-          as.integer(ids$label)
-        })
-        
-        output[[paste0("plot2_", meth)]] <- renderPlot({
-          pts <- extract_points(l_embs[[meth]])
-          dat <- data.frame(dim1 = pts[, 1],
-                            dim2 = pts[, 2],
-                            label = as.factor(1:nrow(pts)))
-          
-          ids <- brushedPoints(dat, input[[paste0("plot_brush_", meth)]])
-          ind <- as.integer(ids$label)
-          
-          mean_fun <- tf_funs %>% summarise(mean = mean(funs))
-          p <- ggplot(tf_funs[ind, ]) +
-            geom_spaghetti(aes(y = mean), 
-                           data = tf_funs[ind, ] %>% summarise(mean = mean(funs)), 
-                           size = 2) +
-            geom_spaghetti(aes(y = mean), data = mean_fun)
-          if (is.null(grouping)) {
-            p + 
-              geom_spaghetti(aes(y = funs, 
-                                 colour = id)) +
-              theme(legend.position = "Non")
-          } else {
-            p +
-              geom_spaghetti(aes(y = funs, 
-                                 colour = group))
-          }
-        })
-      })
-    }
-  )
-}
-
-
-# utility functions
-
-# help fun for plot embedding - S3 class to extract embedding coordinates
-extract_points <- function(x, dim = 2) {
-  UseMethod("extract_points")
-}
-
-# S3 method for isomap
-extract_points.isomap <- function(embedding, ndim = dim(embedding$points)[2]) {
-  embedding$points[, 1:ndim]
-}
-
-# S3 method for umap
-extract_points.umap <- function(embedding, ndim = dim(embedding$layout)[2]) {
-  embedding$layout[, 1:ndim]  
-}
-
-# S3 method for diffusionMap
-extract_points.diffuse <- function(embedding, ndim = dim(embedding$X)[2]) {
-  embedding$X[, 1:ndim]
-}
-
-# S3 method for mds
-extract_points.matrix <- function(embedding, ndim = dim(embedding)[2]) {
-  embedding[, 1:ndim]
-}
-
-# S3 method for tsne
-extract_points.tsne <- function(embedding, ndim = dim(embedding$Y)[2]) {
-  embedding$Y[, 1:ndim]
-}
-
-# extracting optimal embedding info (deprecated?)
-get_opt_embmeas <- function(opt_emb, method) {
-  fs <- opt_emb[[method]]$fs$max
-  ps <- opt_emb[[method]]$ps$max
-  
-  df_res <- data.frame(space = rep(c("fs", "ps"), each = 3),
-                       meas = c(names(fs$meas), names(ps$meas)),
-                       val = c(fs$meas, ps$meas),
-                       params = c(fs$params, ps$params))
-  df_res
-}
-
-# adjusted funs ---------------------------------------------------------------
-# adjusted diffuse function of package diffusionMap with larger iter
-diffuse2 <- function(D, eps.val = epsilonCompute(D), neigen = NULL, t = 0, 
-                     maxdim = 50, delta = 10^-5, maxiter = 100000) {
-  start = proc.time()[3]
-  D = as.matrix(D)
-  n = dim(D)[1]
-  K = exp(-D^2/(eps.val))
-  v = sqrt(apply(K, 1, sum))
-  A = K/(v %*% t(v))
-  ind = which(A > delta, arr.ind = TRUE)
-  Asp = sparseMatrix(i = ind[, 1], j = ind[, 2], x = A[ind], 
-                     dims = c(n, n))
-  f = function(x, A = NULL) {
-    as.matrix(A %*% x)
-  }
-  cat("Performing eigendecomposition\n")
-  if (is.null(neigen)) {
-    neff = min(maxdim + 1, n)
-  }
-  else {
-    neff = min(neigen + 1, n)
-  }
-  decomp = arpack(f, extra = Asp, sym = TRUE, options = list(which = "LA", maxiter = maxiter,
-                                                             nev = neff, n = n, ncv = max(min(c(n, 4 * neff)))))
-  psi = decomp$vectors/(decomp$vectors[, 1] %*% matrix(1, 1, 
-                                                       neff))
-  phi = decomp$vectors * (decomp$vectors[, 1] %*% matrix(1, 
-                                                         1, neff))
-  eigenvals = decomp$values
-  cat("Computing Diffusion Coordinates\n")
-  if (t <= 0) {
-    lambda = eigenvals[-1]/(1 - eigenvals[-1])
-    lambda = rep(1, n) %*% t(lambda)
-    if (is.null(neigen)) {
-      lam = lambda[1, ]/lambda[1, 1]
-      neigen = min(which(lam < 0.05))
-      neigen = min(neigen, maxdim)
-      eigenvals = eigenvals[1:(neigen + 1)]
-      cat("Used default value:", neigen, "dimensions\n")
-    }
-    X = psi[, 2:(neigen + 1)] * lambda[, 1:neigen]
-  }
-  else {
-    lambda = eigenvals[-1]^t
-    lambda = rep(1, n) %*% t(lambda)
-    if (is.null(neigen)) {
-      lam = lambda[1, ]/lambda[1, 1]
-      neigen = min(which(lam < 0.05))
-      neigen = min(neigen, maxdim)
-      eigenvals = eigenvals[1:(neigen + 1)]
-      cat("Used default value:", neigen, "dimensions\n")
-    }
-    X = psi[, 2:(neigen + 1)] * lambda[, 1:neigen]
-  }
-  cat("Elapsed time:", signif(proc.time()[3] - start, digits = 4), 
-      "seconds\n")
-  y = list(X = X, phi0 = phi[, 1], eigenvals = eigenvals[-1], 
-           eigenmult = lambda[1, 1:neigen], psi = psi, phi = phi, 
-           neigen = neigen, epsilon = eps.val)
-  class(y) = "diffuse"
-  return(y)
-}
