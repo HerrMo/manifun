@@ -18,7 +18,7 @@ embed <- function(dist_mat, method = c("isomap", "umap", "diffmap", "mds", "tsne
   method <- match.arg(method, c("isomap", "umap", "diffmap", "mds", "tsne"))
 
   # change to assert: accept only matrices?
-  dist_mat <- if (inherits(dist_mat, "dist")) {as.matrix(dist_mat)}
+  if (inherits(dist_mat, "dist")) dist_mat <- as.matrix(dist_mat)
 
   emb <-
     switch(
