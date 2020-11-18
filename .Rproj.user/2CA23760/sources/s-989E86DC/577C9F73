@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1605691491479.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "577C9F73",
+    "lastKnownWriteTime" : 1605695235,
+    "last_content_update" : 1605695235792,
+    "path" : "~/projects/manifun/R/embedding.R",
+    "project_path" : "R/embedding.R",
+    "properties" : {
+        "cursorPosition" : "13,67",
+        "scrollLine" : "2",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
