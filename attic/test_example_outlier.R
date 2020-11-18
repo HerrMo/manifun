@@ -21,7 +21,7 @@ plot_funs(dat_o, color = lbls)
 
 dists_l2 <- as.matrix(dist(dat_o))
 imap <- embed(dists_l2, method = "isomap", k = 10, ndim = 3)
-umap <- embed(dists_l2, method = "umap")
+umap <- embed(dists_l2, method = "umap", n_components = 3)
 plot_emb(imap, color = lbls) + ggtitle("Isomap embedding of example data")
 plot_emb(umap, color = lbls) + ggtitle("UMAP embedding of example data")
 

@@ -137,15 +137,23 @@ plotly_viz.default <- function(mat, ..., size = 0.1) {
 }
 
 plotly_viz.umap <- function(emb, ..., size = 0.1) {
-  plotly::plot_ly(x = emb$layout[, 1], y = emb$layout[, 2], z = emb$layout[, 3],
+  pts <- extract_points(emb)
+  plotly::plot_ly(x = pts[, 1], y = pts[, 2], z = pts[, 3],
                   size = size,
                   type = "scatter3d", ...)
 }
 
 plotly_viz.tsne <- function(emb, ..., size = 0.1) {
-  plotly::plot_ly(x = emb$Y[, 1], y = emb$Y[, 2], z = emb$Y[, 3],
+  pts <- extract_points(emb)
+  plotly::plot_ly(x = pts[, 1], y = pts[, 2], z = pts[, 3],
                   size = size,
                   type = "scatter3d", ...)
 }
 
+plotly_viz.isomap <- function(emb, ..., size = 0.1) {
+  pts <- extract_points(emb)
+  plotly::plot_ly(x = pts[, 1], y = pts[, 2], z = pts[, 3],
+                  size = size,
+                  type = "scatter3d", ...)
+}
 
