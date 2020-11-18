@@ -98,7 +98,7 @@ auc_log10_k <- function(rnx) {
 }
 
 q_local <- function(x, ...) {
-  UseMethod("local_q")
+  UseMethod("q_local")
 }
 
 q_local.default <- function(d1, d2, ...) {
@@ -148,7 +148,7 @@ q_local.embedding <-
   }
 
 q_global <- function(x, ...) {
-  UseMethod("global_q")
+  UseMethod("q_global")
 }
 
 q_global.default <- function(d1, d2) {
