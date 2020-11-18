@@ -3,10 +3,8 @@
 #'
 #'
 
-#' @import coRanking
-
 R_nx <- function(x, ...) {
-  UseMethod("R_nx2")
+  UseMethod("R_nx")
 }
 
 R_nx.default <- function(d1, d2) {
@@ -57,7 +55,7 @@ auc_rnx <- function(x, ...) {
 }
 
 auc_rnx.default <- function(d1, d2, weight = "inv") {
-  rnx <- R_nx2(d1, d2)
+  rnx <- R_nx(d1, d2)
 
   weight <- match.arg(weight, c("inv", "ln", "log", "log10"))
   switch(
@@ -71,7 +69,7 @@ auc_rnx.default <- function(d1, d2, weight = "inv") {
 }
 
 auc_rnx.embedding <- function(object, ndim = 2, p_space = FALSE, weight = "inv") {
-  rnx <- R_nx2(object, ndim = ndim, p_space = p_space)
+  rnx <- R_nx(object, ndim = ndim, p_space = p_space)
 
   weight <- match.arg(weight, c("inv", "ln", "log", "log10"))
   switch(
