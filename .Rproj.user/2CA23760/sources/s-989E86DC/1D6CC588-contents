@@ -1,9 +1,10 @@
 # viusalization tools
 
-#' @import gplot2
+#' @import ggplot2
 
 
 # function to plot funs of fun_data object
+#' @export
 plot_funs <- function(data, ...) {
   UseMethod("plot_funs")
 }
@@ -53,6 +54,7 @@ plot_funs.fundat <- function(data, col = NULL) {
 }
 
 # function to plot embeddings
+#' @export
 plot_emb <- function(embedding, ...) {
   UseMethod("embedding")
 }
@@ -99,6 +101,7 @@ plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1
 
 
 # convenience function for plotly to visualize embedding object
+#' @export
 plotly_viz <- function(x, ...) {
   UseMethod("plotly_viz", x)
 }

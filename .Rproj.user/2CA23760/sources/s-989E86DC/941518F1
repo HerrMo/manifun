@@ -5,13 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3105175464",
+    "hash" : "0",
     "id" : "941518F1",
-    "lastKnownWriteTime" : 1605691305,
-    "last_content_update" : 1605691305,
+    "lastKnownWriteTime" : 1605707910,
+    "last_content_update" : 1605707910,
     "path" : "~/projects/manifun/DESCRIPTION",
     "project_path" : "DESCRIPTION",
     "properties" : {
+        "cursorPosition" : "0,0",
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [
