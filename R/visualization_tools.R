@@ -82,7 +82,7 @@ plot_emb.default <- function(pts, color = NULL, size = 1, ...) {
 plot_emb.matrix <- function(embedding, color = NULL, labels = FALSE, size = 1) {
   # TODO argument checking (min 2-d data, etc)
 
-  pts <- extract_points(emb, 2)
+  pts <- extract_points(embedding, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
   if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
