@@ -79,7 +79,7 @@ plot_emb.default <- function(pts, color = NULL, size = 1, ...) {
 }
 
 # for embeddings coordinates in matrix format
-plot_emb.matrix <- function(embedding, color = NULL, labels = FALSE, size = 1) {
+plot_emb.matrix <- function(embedding, color = NULL, labels = FALSE, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
   pts <- extract_points(embedding, 2)
