@@ -20,7 +20,7 @@ plot_funs.default <- function(data, col = NULL) {
     id = as.factor(rep(1:n, each = grid_len))
   )
 
-  if (!is.null(col)) df_dat$col <- as.factor(rep(col, each = grid_len))
+  if (!is.null(col)) df_dat$col <- rep(col, each = grid_len)
 
   ggplot(df_dat) +
     geom_line(aes(x = args,
