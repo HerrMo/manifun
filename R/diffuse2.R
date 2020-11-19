@@ -1,3 +1,5 @@
+#' @import arpack form igraph
+
 # adjusted diffuse function of package diffusionMap with larger iter
 diffuse2 <- function(D, eps.val = epsilonCompute(D), neigen = NULL, t = 0,
                      maxdim = 50, delta = 10^-5, maxiter = 100000) {

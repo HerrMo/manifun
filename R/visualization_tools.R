@@ -117,7 +117,23 @@ plot_emb.umap <- function(embedding, color = NULL, labels = FALSE, size = 1, ...
   p
 }
 
+plot_emb.tsne <- function(embedding, color = NULL, labels = FALSE, size = 1, ...) {
+  # TODO argument checking (min 2-d data, etc)
 
+  pts <- extract_points(embedding, 2)
+  p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  p
+}
+
+plot_emb.diffuse <- function(embedding, color = NULL, labels = FALSE, size = 1, ...) {
+  # TODO argument checking (min 2-d data, etc)
+
+  pts <- extract_points(embedding, 2)
+  p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  p
+}
 # convenience function for plotly to visualize embedding object
 #' @export
 plotly_viz <- function(x, ...) {
