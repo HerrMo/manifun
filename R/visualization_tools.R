@@ -95,7 +95,7 @@ plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1
   emb <- embedding$emb
   pts <- extract_points(emb, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
-  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
 
@@ -104,7 +104,7 @@ plot_emb.isomap <- function(embedding, color = NULL, labels = FALSE, size = 1, .
 
   pts <- extract_points(embedding, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
-  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
 
@@ -113,7 +113,7 @@ plot_emb.umap <- function(embedding, color = NULL, labels = FALSE, size = 1, ...
 
   pts <- extract_points(embedding, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
-  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
 
@@ -122,7 +122,7 @@ plot_emb.tsne <- function(embedding, color = NULL, labels = FALSE, size = 1, ...
 
   pts <- extract_points(embedding, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
-  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
 
@@ -131,7 +131,7 @@ plot_emb.diffuse <- function(embedding, color = NULL, labels = FALSE, size = 1, 
 
   pts <- extract_points(embedding, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
-  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = label))
+  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
 # convenience function for plotly to visualize embedding object
