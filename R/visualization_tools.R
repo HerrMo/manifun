@@ -99,21 +99,29 @@ plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1
   p
 }
 
-plot_emb.isomap <- function(embedding, color = NULL, labels = FALSE, size = 1, ...) {
+plot_emb.isomap <- function(embedding, color = NULL, labels_off = TRUE, labels = NULL, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
   pts <- extract_points(embedding, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
-  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
+  if (!labels_off) p <- if (is.null(labels)) {
+    p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
+  } else {
+    p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = labels))
+  }
   p
 }
 
-plot_emb.umap <- function(embedding, color = NULL, labels = FALSE, size = 1, ...) {
+plot_emb.umap <- function(embedding, color = NULL, labels_off = TRUE, labels = NULL, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
   pts <- extract_points(embedding, 2)
   p <- plot_emb.default(pts, color = color, labels = labels, size = size, ...)
-  if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
+  if (!labels_off) p <- if (is.null(labels)) {
+    p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
+  } else {
+    p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = labels))
+  }
   p
 }
 
@@ -171,5 +179,34 @@ plotly_viz.isomap <- function(emb, ..., size = 0.1) {
   plotly::plot_ly(x = pts[, 1], y = pts[, 2], z = pts[, 3],
                   size = size,
                   type = "scatter3d", ...)
+}
+
+plot_pics <- function(dat, labels = NULL) {
+  n_pxls <- ncol(dat)
+  n_obs <- nrow(dat)
+
+  dt_dat <- as.data.table(dat)
+
+  tt_image <- melt(dt_dat, measure.vars = colnames(dt_dat))
+  tt_image[, id := rep(1:n_obs, n_pxls)]
+
+  pixels <- expand.grid(0:(sqrt(n_pxls)-1), 0:(sqrt(n_pxls)-1))
+
+  tt_image[, x := rep(pixels$Var1, each = n_obs)]
+  tt_image[, y := rep(pixels$Var2, each = n_obs)]
+  setnames(tt_image, "value", "intensity")
+
+  tt_image[, id_fac := as.factor(tt_image$id)]
+  if (!is.null(labels)) levels(tt_image$id_fac) <- labels
+
+  ggplot(data = tt_image) +
+    geom_raster(aes(x, y, fill = intensity)) +
+    facet_wrap(~ id_fac, nrow = max(6, ceiling(n_obs/6)), ncol = 6) +
+    theme_classic() +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title = element_blank(),
+          axis.line = element_blank(),
+          strip.text = element_text(size = 15))
 }
 
