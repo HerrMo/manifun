@@ -2,16 +2,19 @@
 % Please edit documentation in R/embedding.R
 \name{embed}
 \alias{embed}
-\title{Embedding data based on distance matrix}
+\title{Embedding data}
 \arguments{
 \item{dist_mat}{Either an object of class dist or square matrix of pairwise distance of the data to be embedded}
 
 \item{method}{Manifold method use to compute the embedding. One of "isomap" (isometric feature mapping), "umap"
 (uniform manifold approximation and projection), "diffmap" (diffusion map), "mds" (multi-dimensional scaling), and
-"t-sne" (t-distributed stochastic neighborhood embedding.)
+"tsne" (t-distributed stochastic neighborhood embedding.)}
 
-Returns an embedding object of class <method>.}
+\item{...}{Arguments to be passed to the embedding methods}
+}
+\value{
+Returns an embedding object of class <method>.
 }
 \description{
-Embedding data based on distance matrix
+Wrapper function for several embedding methods.
 }

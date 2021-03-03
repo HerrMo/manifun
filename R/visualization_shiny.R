@@ -1,12 +1,19 @@
-
-#' @import shiny
-
-#' shiny app vis
+#' Interactive visualization of embeddings using shiny
+#'
+#' @param l_embs list of embedding objects as produced by 'embed'
+#' @param funs matrix or data.frame containing the functional observations row-wise
+#' @param grid vector of grid points, respectively arguments at which the functions have been evaluated
+#' @param grouping vector indicating group membership. Used for color coding.
+#'
+#' @details Visualizes up to four embeddings of a functional data set.
+#'
 #' @export
-# shiny visualization for lists of embedding objects as produced by embed
-# TODO arg check
-# TODO add groups
+#' @import shiny
+#' @usage NULL
+#' @format NULL
 shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
+  # TODO arg check
+  # TODO add groups
   methods <- vapply(l_embs,
                     function(emb) class(emb),
                     FUN.VALUE = character(length(1)))

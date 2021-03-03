@@ -1,11 +1,14 @@
-#' Embedding data based on distance matrix
+#' Embedding data
+#'
+#' Wrapper function for several embedding methods.
 #'
 #' @param dist_mat Either an object of class dist or square matrix of pairwise distance of the data to be embedded
 #' @param method Manifold method use to compute the embedding. One of "isomap" (isometric feature mapping), "umap"
 #' (uniform manifold approximation and projection), "diffmap" (diffusion map), "mds" (multi-dimensional scaling), and
-#' "t-sne" (t-distributed stochastic neighborhood embedding.)
+#' "tsne" (t-distributed stochastic neighborhood embedding.)
+#' @param ... Arguments to be passed to the embedding methods
 #'
-#' Returns an embedding object of class <method>.
+#' @return Returns an embedding object of class <method>.
 
 #' @export
 #' @import vegan

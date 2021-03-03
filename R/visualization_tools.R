@@ -3,7 +3,6 @@
 #' @import ggplot2
 
 
-# function to plot funs of fun_data object
 #' @export
 plot_funs <- function(data, ...) {
   UseMethod("plot_funs")
@@ -142,7 +141,11 @@ plot_emb.diffuse <- function(embedding, color = NULL, labels = FALSE, size = 1, 
   if (labels) p <- p + ggrepel::geom_text_repel(aes(x = dim1, y = dim2, label = 1:nrow(pts)))
   p
 }
-# convenience function for plotly to visualize embedding object
+
+#' S3 method to visualize embedding objects via plotly
+#'
+#' @param emb Matrix with embedding coordinates or embedding object as return by 'embed'
+#' @param ... Further parameters to be passed to plot_ly
 #' @export
 plotly_viz <- function(x, ...) {
   UseMethod("plotly_viz", x)
@@ -182,8 +185,21 @@ plotly_viz.isomap <- function(emb, ..., size = 0.1) {
 }
 
 
-#' Plots images
+#' Plotting image data
+#'
+#' Several images are plotted via facet_grid. Does only make sense for a sample of
+#' the data with up to ~ 30 images.
+#'
+#' @param dat matrix or data.frame of image data with images represented by pixel-intensity stored row-wise
+#' @param labels Labels to put on the facets.
+#' @param nrow Number of rows of the facet_grid
+#' @param ncol Number of columns of the facet grid
+#'
+#' @details Pixel intensities are not gathered the same way for all data sets. You may need
+#' to add combinations of 'coord_flip', 'scale_x_reverse', 'scale_y_reverse'.
+#'
 #' @export
+#' @import ggplot2
 plot_pics <- function(dat, labels = NULL, nrow = NULL, ncol = NULL) {
   n_pxls <- ncol(dat)
   n_obs <- nrow(dat)

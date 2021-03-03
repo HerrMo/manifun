@@ -1,4 +1,4 @@
-#' @import arpack form igraph
+#' @importFrom igraph arpack
 
 # adjusted diffuse function of package diffusionMap with larger iter
 diffuse2 <- function(D, eps.val = epsilonCompute(D), neigen = NULL, t = 0,
