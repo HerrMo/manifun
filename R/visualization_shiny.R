@@ -13,28 +13,12 @@ shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
     methods <- paste0(methods, "-", 1:length(methods))
   }
 
-  # TODO check metric slot to be non-NULL
-  # metrics <- vapply(l_embs,
-  #                   function(emb) emb[["metric"]],
-  #                   FUN.VALUE = character(length(1)))
-
-  # TODO check datasets to be equal!!!
-
   # make sure we have unique names for every embedding/plot
   unique_nams <- paste(methods, seq_along(l_embs), sep = "-")
   names(l_embs) <- unique_nams
 
-  # funs <- get_funs(l_embs[[1]]$data) # funs in rows
-  # n_funs <- nrow(funs)
-  # grid <- get_grid(l_embs[[1]]$data)
-  # grid_size <- length(grid)
   n_funs <- nrow(funs)
   grid_size <- length(grid)
-
-  # tf_funs <- tibble("funs" = tfd(funs, arg = grid),
-  #                   "id" = as.factor(1:n_funs))
-  df_funs <- data.frame()
-  #if (!is.null(grouping)) tf_funs$group <- grouping
 
   shinyApp(
     ui <- fluidPage(
@@ -51,7 +35,7 @@ shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
     ),
 
     server <- function(input, output) {
-      lapply(unique_nams, function(meth) { # shorten by using plot_emb2!
+      lapply(unique_nams, function(meth) {
         output[[paste0("plot1_", meth)]] <- renderPlot({
           if (!is.null(grouping)) {
             plot_emb(l_embs[[meth]], col = grouping, ...)
@@ -76,11 +60,12 @@ shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
                             dim2 = pts[, 2],
                             label = as.factor(1:nrow(pts)))
 
+
           ids <- brushedPoints(dat, input[[paste0("plot_brush_", meth)]])
           ind <- as.integer(ids$label)
 
-          temp_mean <- apply(funs[ind, ], 2, mean)
           global_mean <- apply(funs, 2, mean)
+          temp_mean <- apply(funs[ind, , drop = FALSE], 2, mean)
 
           p_temp_mean <-
             geom_line(
@@ -97,19 +82,23 @@ shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
               color = "black",
               size = 0.5
             )
-          if (!is.null(grouping)) {
-            p <-
-              plot_funs(funs[ind, ], args = grid, col = grouping[ind]) +
-              p_temp_mean +
-              p_gobal_mean
 
+          if (length(ids$dim1) == 0) {
+            ggplot() + p_gobal_mean
           } else {
-            p <-
-              plot_funs(funs[ind, ], args = grid) +
-              p_temp_mean +
-              p_gobal_mean
+            if (!is.null(grouping)) {
+              p <-
+                plot_funs(funs[ind, , drop = FALSE], args = grid, col = grouping[ind]) +
+                p_temp_mean +
+                p_gobal_mean
+            } else {
+              p <-
+                plot_funs(funs[ind, , drop = FALSE], args = grid) +
+                p_temp_mean +
+                p_gobal_mean
+            }
+            p
           }
-          p
         })
       })
     }
