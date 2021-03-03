@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization_shiny.R
 \name{shiny_viz}
 \alias{shiny_viz}
-\title{Interactive visualization of embeddings using shiny}
+\title{Interactive visualization of embeddings}
 \arguments{
 \item{l_embs}{list of embedding objects as produced by 'embed'}
 
@@ -13,8 +13,11 @@
 \item{grouping}{vector indicating group membership. Used for color coding.}
 }
 \description{
-Interactive visualization of embeddings using shiny
+Visualizes a functional data set and up to four embeddings of it using shiny.
 }
 \details{
-Visualizes up to four embeddings of a functional data set.
+The dotted black line indicates the global mean function. After selecting points
+in the embedding(s) the corresponding functions and their mean(dashed black line)
+will be plotted as well. Note, if you select several hundred points, plotting takes some time.
+In addition, the indices of the selected functions are depicted.
 }

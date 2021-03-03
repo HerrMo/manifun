@@ -142,9 +142,11 @@ plot_emb.diffuse <- function(embedding, color = NULL, labels = FALSE, size = 1, 
   p
 }
 
+#' 3D visualization of embeddings
+#'
 #' S3 method to visualize embedding objects via plotly
 #'
-#' @param emb Matrix with embedding coordinates or embedding object as return by 'embed'
+#' @param x Matrix with embedding coordinates or embedding object as return by 'embed'
 #' @param ... Further parameters to be passed to plot_ly
 #' @export
 plotly_viz <- function(x, ...) {
