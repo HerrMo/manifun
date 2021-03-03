@@ -1,6 +1,8 @@
 
-# shiny app vis ------------------------------------------------------------
+#' @import shiny
 
+#' shiny app vis
+#' @export
 # shiny visualization for lists of embedding objects as produced by embed
 # TODO arg check
 # TODO add groups
