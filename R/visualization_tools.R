@@ -11,11 +11,11 @@ plot_funs <- function(data, ...) {
 
 
 # default function for data in fundata in matrix format
-plot_funs.default <- function(data, col = NULL) {
+plot_funs.default <- function(data, col = NULL, args = NULL) {
   n <- nrow(data)
   grid_len <- ncol(data)
   df_dat <- data.frame(
-    args = rep(1:grid_len, n),
+    args = if (is.null(args)) rep(1:grid_len, n) else args,
     vals = c(t(data)),
     id = as.factor(rep(1:n, each = grid_len))
   )
@@ -30,7 +30,7 @@ plot_funs.default <- function(data, col = NULL) {
     theme(legend.position = "None")
 }
 
-# same as above but for objects of class von dat
+# same as above but for objects of class fundat
 plot_funs.fundat <- function(data, col = NULL) {
   funs <- get_funs(data)
   grid <- get_grid(data)
@@ -181,14 +181,17 @@ plotly_viz.isomap <- function(emb, ..., size = 0.1) {
                   type = "scatter3d", ...)
 }
 
-plot_pics <- function(dat, labels = NULL) {
+
+#' Plots images
+#' @export
+plot_pics <- function(dat, labels = NULL, nrow = NULL, ncol = NULL) {
   n_pxls <- ncol(dat)
   n_obs <- nrow(dat)
 
   dt_dat <- as.data.table(dat)
 
   tt_image <- melt(dt_dat, measure.vars = colnames(dt_dat))
-  tt_image[, id := rep(1:n_obs, n_pxls)]
+  tt_image$id <- rep(1:n_obs, n_pxls)
 
   pixels <- expand.grid(0:(sqrt(n_pxls)-1), 0:(sqrt(n_pxls)-1))
 
@@ -201,7 +204,10 @@ plot_pics <- function(dat, labels = NULL) {
 
   ggplot(data = tt_image) +
     geom_raster(aes(x, y, fill = intensity)) +
-    facet_wrap(~ id_fac, nrow = max(6, ceiling(n_obs/6)), ncol = 6) +
+    facet_wrap(
+      ~ id_fac,
+      nrow = if (is.null(nrow)) max(6, ceiling(n_obs/6)) else nrow,
+      ncol = if (is.null(ncol)) 6 else ncol) +
     theme_classic() +
     theme(axis.text = element_blank(),
           axis.ticks = element_blank(),
