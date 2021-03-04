@@ -202,6 +202,7 @@ plotly_viz.isomap <- function(emb, ..., size = 0.1) {
 #'
 #' @export
 #' @import ggplot2
+#' @import data.table
 plot_pics <- function(dat, labels = NULL, nrow = NULL, ncol = NULL) {
   n_pxls <- ncol(dat)
   n_obs <- nrow(dat)
@@ -213,11 +214,11 @@ plot_pics <- function(dat, labels = NULL, nrow = NULL, ncol = NULL) {
 
   pixels <- expand.grid(0:(sqrt(n_pxls)-1), 0:(sqrt(n_pxls)-1))
 
-  tt_image[, x := rep(pixels$Var1, each = n_obs)]
-  tt_image[, y := rep(pixels$Var2, each = n_obs)]
+  tt_image$x <- rep(pixels$Var1, each = n_obs)
+  tt_image$y <- rep(pixels$Var2, each = n_obs)
   setnames(tt_image, "value", "intensity")
 
-  tt_image[, id_fac := as.factor(tt_image$id)]
+  tt_image$id_fac <- as.factor(tt_image$id)
   if (!is.null(labels)) levels(tt_image$id_fac) <- labels
 
   ggplot(data = tt_image) +
