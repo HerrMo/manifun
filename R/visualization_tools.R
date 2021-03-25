@@ -10,6 +10,7 @@ plot_funs <- function(data, ...) {
 
 
 # default function for data in fundata in matrix format
+#' @export
 plot_funs.default <- function(data, col = NULL, args = NULL) {
   n <- nrow(data)
   grid_len <- ncol(data)
@@ -30,6 +31,7 @@ plot_funs.default <- function(data, col = NULL, args = NULL) {
 }
 
 # same as above but for objects of class fundat
+#' @export
 plot_funs.fundat <- function(data, col = NULL) {
   funs <- get_funs(data)
   grid <- get_grid(data)
@@ -59,6 +61,7 @@ plot_emb <- function(embedding, ...) {
 }
 
 # default method for embedding data in 2d matrix format
+#' @export
 plot_emb.default <- function(pts, color = NULL, size = 1, ...) {
 
   dat <- data.frame(dim1 = pts[, 1],
@@ -78,6 +81,7 @@ plot_emb.default <- function(pts, color = NULL, size = 1, ...) {
 }
 
 # for embeddings coordinates in matrix format
+#' @export
 plot_emb.matrix <- function(embedding, color = NULL, labels_off = TRUE, labels = NULL, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
@@ -92,6 +96,7 @@ plot_emb.matrix <- function(embedding, color = NULL, labels_off = TRUE, labels =
 }
 
 # for objects of class embedding
+#' @export
 plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1) {
   # TODO argument checking (min 2-d data, etc)
 
@@ -102,6 +107,7 @@ plot_emb.embedding <- function(embedding, color = NULL, labels = FALSE, size = 1
   p
 }
 
+#' @export
 plot_emb.isomap <- function(embedding, color = NULL, labels_off = TRUE, labels = NULL, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
@@ -115,6 +121,7 @@ plot_emb.isomap <- function(embedding, color = NULL, labels_off = TRUE, labels =
   p
 }
 
+#' @export
 plot_emb.umap <- function(embedding, color = NULL, labels_off = TRUE, labels = NULL, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
@@ -128,6 +135,7 @@ plot_emb.umap <- function(embedding, color = NULL, labels_off = TRUE, labels = N
   p
 }
 
+#' @export
 plot_emb.tsne <- function(embedding, color = NULL, labels = FALSE, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
@@ -137,6 +145,7 @@ plot_emb.tsne <- function(embedding, color = NULL, labels = FALSE, size = 1, ...
   p
 }
 
+#' @export
 plot_emb.diffuse <- function(embedding, color = NULL, labels = FALSE, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
@@ -157,18 +166,21 @@ plotly_viz <- function(x, ...) {
   UseMethod("plotly_viz", x)
 }
 
+#' @export
 plotly_viz.embedding <- function(emb, ..., size = 0.1) {
   plotly::plot_ly(x = emb$points[, 1], y = emb$points[, 2], z = emb$points[, 3],
                   size = size,
                   type = "scatter3d", ...)
 }
 
+#' @export
 plotly_viz.default <- function(mat, ..., size = 0.1) {
   plotly::plot_ly(x = mat[, 1], y = mat[, 2], z = mat[, 3],
                   size = size,
                   type = "scatter3d", ...)
 }
 
+#' @export
 plotly_viz.umap <- function(emb, ..., size = 0.1) {
   pts <- extract_points(emb)
   plotly::plot_ly(x = pts[, 1], y = pts[, 2], z = pts[, 3],
@@ -176,6 +188,7 @@ plotly_viz.umap <- function(emb, ..., size = 0.1) {
                   type = "scatter3d", ...)
 }
 
+#' @export
 plotly_viz.tsne <- function(emb, ..., size = 0.1) {
   pts <- extract_points(emb)
   plotly::plot_ly(x = pts[, 1], y = pts[, 2], z = pts[, 3],
@@ -183,6 +196,7 @@ plotly_viz.tsne <- function(emb, ..., size = 0.1) {
                   type = "scatter3d", ...)
 }
 
+#' @export
 plotly_viz.isomap <- function(emb, ..., size = 0.1) {
   pts <- extract_points(emb)
   plotly::plot_ly(x = pts[, 1], y = pts[, 2], z = pts[, 3],
