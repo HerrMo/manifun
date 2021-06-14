@@ -20,8 +20,8 @@ shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
   # TODO arg check
   # TODO add groups
   methods <- vapply(l_embs,
-                    function(emb) class(emb),
-                    FUN.VALUE = character(length(1)))
+                    function(emb) class(emb)[[1]],
+                    FUN.VALUE = character(1))
 
   if (length(unique(methods)) != length(methods)) {
     methods <- paste0(methods, "-", 1:length(methods))

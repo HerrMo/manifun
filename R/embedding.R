@@ -71,10 +71,4 @@ extract_points.tsne <- function(embedding, ndim = dim(embedding$Y)[2]) {
   embedding$Y[, 1:ndim]
 }
 
-# S3 method for array output, e.g. mds
-extract_points.array <- function(embedding, ndim = dim(embedding)[2]) {
-  embedding[, 1:ndim]
-}
-
-
 
