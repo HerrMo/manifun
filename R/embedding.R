@@ -46,11 +46,13 @@ extract_points <- function(x, ...) {
 }
 
 # S3 method for isomap
+#' @export
 extract_points.isomap <- function(embedding, ndim = dim(embedding$points)[2]) {
   embedding$points[, 1:ndim]
 }
 
 # S3 method for umap
+#' @export
 extract_points.umap <- function(embedding, ndim = dim(embedding$layout)[2]) {
   embedding$layout[, 1:ndim]
 }
@@ -63,10 +65,11 @@ extract_points.diffuse <- function(embedding, ndim = dim(embedding$X)[2]) {
 # S3 method for matrix output, e.g. mds
 #' @export
 extract_points.matrix <- function(embedding, ndim = dim(embedding)[2]) {
-  embedding[, 1:ndim]
+  embedding[, seq_len(ndim), drop = FALSE]
 }
 
 # S3 method for tsne
+#' @export
 extract_points.tsne <- function(embedding, ndim = dim(embedding$Y)[2]) {
   embedding$Y[, 1:ndim]
 }

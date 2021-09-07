@@ -28,7 +28,8 @@ shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
   }
 
   # make sure we have unique names for every embedding/plot
-  unique_nams <- paste(methods, seq_along(l_embs), sep = "-")
+  # unique_nams <- paste(methods, seq_along(l_embs), sep = "-")
+  unique_nams <- methods
   names(l_embs) <- unique_nams
 
   n_funs <- nrow(funs)
@@ -52,9 +53,11 @@ shiny_viz <- function(l_embs, funs, grid, grouping = NULL, ...) {
       lapply(unique_nams, function(meth) {
         output[[paste0("plot1_", meth)]] <- renderPlot({
           if (!is.null(grouping)) {
-            plot_emb(l_embs[[meth]], col = grouping, ...)
+            plot_emb(l_embs[[meth]], col = grouping, ...) +
+              ggtitle(meth)
           } else {
-            plot_emb(l_embs[[meth]], ...)
+            plot_emb(l_embs[[meth]], ...) +
+              ggtitle(meth)
           }
         })
 
