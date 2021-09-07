@@ -11,7 +11,7 @@ plot_funs <- function(data, ...) {
 
 # default function for data in fundata in matrix format
 #' @export
-plot_funs.default <- function(data, col = NULL, args = NULL) {
+plot_funs.default <- function(data, col = NULL, args = NULL, ...) {
   n <- nrow(data)
   grid_len <- ncol(data)
   df_dat <- data.frame(
