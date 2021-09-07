@@ -11,7 +11,7 @@ plot_funs <- function(data, ...) {
 
 # default function for data in fundata in matrix format
 #' @export
-plot_funs.default <- function(data, col = NULL, args = NULL, ...) {
+plot_funs.default <- function(data, col = NULL, args = NULL) {
   n <- nrow(data)
   grid_len <- ncol(data)
   df_dat <- data.frame(
@@ -83,7 +83,7 @@ plot_emb.default <- function(pts, color = NULL, size = 1, ...) {
 
 # for embeddings coordinates in matrix format
 #' @export
-plot_emb.matrix <- function(embedding, color = NULL, labels_off = TRUE, labels = NULL, size = 1, label_size = 3, ...) {
+plot_emb.matrix <- function(embedding, color = NULL, labels_off = TRUE, labels = NULL, size = 1, ...) {
   # TODO argument checking (min 2-d data, etc)
 
   pts <- extract_points(embedding, 2)

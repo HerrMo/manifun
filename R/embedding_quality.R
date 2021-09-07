@@ -2,11 +2,12 @@
 #'
 #'
 #'
-
+#' @export
 R_nx <- function(x, ...) {
   UseMethod("R_nx")
 }
 
+#' @export
 R_nx.default <- function(d1, d2) {
   assertMatrix(d1)
   assertMatrix(d2)
@@ -50,10 +51,12 @@ R_nx.embedding <- function(object, ndim = 2, p_space = FALSE) {
   Rnx[-nQ]
 }
 
+#' @export
 auc_rnx <- function(x, ...) {
   UseMethod("auc_rnx")
 }
 
+#' @export
 auc_rnx.default <- function(d1, d2, weight = "inv") {
   rnx <- R_nx(d1, d2)
 
@@ -68,6 +71,7 @@ auc_rnx.default <- function(d1, d2, weight = "inv") {
   )
 }
 
+#' @export
 auc_rnx.embedding <- function(object, ndim = 2, p_space = FALSE, weight = "inv") {
   rnx <- R_nx(object, ndim = ndim, p_space = p_space)
 
@@ -97,10 +101,12 @@ auc_log10_k <- function(rnx) {
   return(sum(rnx * log10(Ks)) / sum(log10(Ks)))
 }
 
+#' @export
 q_local <- function(x, ...) {
   UseMethod("q_local")
 }
 
+#' @export
 q_local.default <- function(d1, d2, ...) {
   assertMatrix(d1)
   assertMatrix(d2)
@@ -121,6 +127,7 @@ q_local.default <- function(d1, d2, ...) {
   return(as.vector(Qlocal))
 }
 
+#' @export
 q_local.embedding <-
   function(object, ndim = 3, p_space) {
     ld_dist <- as.matrix(dist(object$points[, 1:ndim]))
@@ -147,10 +154,12 @@ q_local.embedding <-
     return(as.vector(Qlocal))
   }
 
+#' @export
 q_global <- function(x, ...) {
   UseMethod("q_global")
 }
 
+#' @export
 q_global.default <- function(d1, d2) {
   assertMatrix(d1)
   assertMatrix(d2)
@@ -170,7 +179,7 @@ q_global.default <- function(d1, d2) {
   Qglobal <- sum(lcmc[(Kmax + 1):nQ]) / (N - Kmax)
   return(as.vector(Qglobal))
 }
-
+#' @export
 q_global.embedding <-
   function(object, ndim = 3, p_space){
     ld_dist <- as.matrix(dist(object$points[, 1:ndim]))
